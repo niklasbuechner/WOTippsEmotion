@@ -117,7 +117,11 @@ class Shopware_Plugins_Frontend_WOTippsEmotion_Bootstrap extends Shopware_Compon
     
     public function addJavascriptFiles(Enlight_Event_EventArgs $args)
     {
-        $js = __DIR__ . '/js/load.js';
+        if (1 == version_compare(Shopware()->Config()->Version, "5.2.99")) {
+            $js = __DIR__ . '/js/load53.js';
+        } else {
+            $js = __DIR__ . '/js/load.js';
+        }
 
         return new ArrayCollection(array($js));
 
@@ -127,7 +131,7 @@ class Shopware_Plugins_Frontend_WOTippsEmotion_Bootstrap extends Shopware_Compon
     {
         $view = $args->getSubject()->View();
 
-        $view->extendsTemplate($this->Path() . 'Views/frontend/index/index.tpl');
+        //$view->extendsTemplate($this->Path() . 'Views/frontend/index/index.tpl');
     }
     
     public function addCSSFiles(Enlight_Event_EventArgs $args)
