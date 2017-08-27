@@ -8,27 +8,42 @@ $.overridePlugin('swEmotionLoader', {
                 state = deviceState || StateManager.getCurrentState();
 
             /**
-             * Hide the emotion world if it is not defined for the current device.
+             * If the emotion world is not defined for the current device,
+             * hide the wrapper element and show the default content.
              */
             if (devices.indexOf(types[state]) === -1) {
-                me.$overlay.remove();
+                var hasSameDeviceSibling = false;
+
                 me.hideEmotion();
+
+                me.$siblings.each(function(index, el) {
+                    var devices = $(el).attr('data-availabledevices');
+
+                    if (devices.indexOf(types[state]) !== -1) {
+                        hasSameDeviceSibling = true;
+                    }
+                });
+
+                if (!hasSameDeviceSibling) me.showFallbackContent();
                 return;
             }
 
             /**
-             * Return if the plugin is not configured correctly.
+             * If the plugin is not configured correctly show the default content.
              */
             if (!devices.length || !state.length || !url.length) {
-                me.$overlay.remove();
                 me.hideEmotion();
+                me.showFallbackContent();
                 return;
             }
 
             /**
              * If the emotion world was already loaded show it.
              */
-            if (me.$emotion && me.$emotion.length) {
+            if (me.$emotion.length) {
+
+                (me.opts.showListing) ? me.showFallbackContent() : me.hideFallbackContent();
+
                 me.$overlay.remove();
                 me.showEmotion();
                 return;
@@ -64,6 +79,8 @@ $.overridePlugin('swEmotionLoader', {
                         me.showFallbackContent();
                         return;
                     }
+
+                    (me.opts.showListing) ? me.showFallbackContent() : me.hideFallbackContent();
 
                     me.initEmotion(response);
 

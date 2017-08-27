@@ -1,4 +1,4 @@
-{*{block name='frontend_index_header_javascript_jquery_lib' prepend}
+{block name='frontend_index_header_javascript_jquery_lib' prepend}
 
 <script type="text/javascript">
 /* 
@@ -7,7 +7,7 @@
  * http://www.wotipps.de
  * This code may not be distributed without written permission.
  */
-{literal}
+{*{literal}
 (function(){var m;function q(e,a,f){a=a?a:e;f=a.getElementsByClassName(f?f:"banner--content")[0];var b=window.getComputedStyle(e);e=b.width;b=b.height;a=a.dataset.width/a.dataset.height;var g=a>e/b;f.style.width=g?b*a+"px":"100%";f.style.height=g?"100%":e/a+"px"}function n(){var e=window.innerWidth;m="number"!=typeof e?-1:480>e?{name:"xs",b:4}:768>e?{name:"s",b:3}:1024>e?{name:"m",b:2}:1260>e?{name:"l",b:1}:{name:"xl",b:0};var e=document.getElementsByClassName("emotion--wrapper"),n=e.length;0<document.getElementsByClassName("emotion--overlay").length&&
 (document.getElementsByClassName("emotion--overlay")[0].outerHTML="");for(var f=0;f<n;f++)if(-1==e[f].dataset.availabledevices.indexOf(m.b))e[f].outerHTML="";else{a={};a.a=e[f];var b=a.a.getElementsByClassName("emotion--container")[0];a.width=a.a.offsetWidth;if("resize"==b.dataset.gridmode){var g=~~b.dataset.basewidth,d=~~b.dataset.cellspacing;a.c=g;b.style.width=g+d+"px";g=a.c/b.offsetHeight;d="scale("+a.width/a.c+") translateX(0.625rem)";b=b.style;b.f=d;b.g=d;b.MozTransform=d;b.webkitTransform=
 d;b.transform=d;a.a.style.height=a.width/g+"px";for(var h=a.a.getElementsByClassName("emotion--banner"),c=h.length,k=a.a.getElementsByClassName("image-slider"),l=k.length,b=a.a.getElementsByClassName("product-slider"),g=b.length,d=0;d<c;d++)q(h[d]);for(d=0;d<l;d++)for(var h=k[0],c=h.getElementsByClassName("image-slider--item"),r=c.length,p=0;p<r;p++)q(h,c[p],"banner-slider--banner");for(d=0;d<g;d++)if(c=b[d],c.dataset.mode&&"ajax"==c.dataset.mode)c.getElementsByClassName("product-slider--container")[0].innerHTML+=
@@ -270,6 +270,6 @@ d;b.transform=d;a.a.style.height=a.width/g+"px";for(var h=a.a.getElementsByClass
     
     //document.addEventListener('DOMContentLoaded', function(){console.log(Date.now());});
 })();
-{/literal}
+{/literal}*}
 </script>
-{/block}*}
+{/block}
