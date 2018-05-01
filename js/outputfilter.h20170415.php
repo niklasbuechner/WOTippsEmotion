@@ -178,10 +178,8 @@ SCRIPT;
     return getOutput($input, $debug);
 }
 
-//echo smarty_outputfilter_h20170415('/shopware/51/widgets/emotion/index/emotionId/4/controllerName/index </body>');
-
 function getOutput($input, $json)
 {
     $string = json_encode($json);
-    return str_replace('</body>', '<style>.wotipps-hidden{visibility:hidden;display:none;}</style><script>function wotippsDeb(){var a = ' . $string . ';}</script>', $input);
+    return str_replace('</body>', '<style>.wotipps-hidden{visibility:hidden;display:none;}</style><script>function wotippsDeb(){var a = ' . $string . ';}</script></body>', $input);
 }
