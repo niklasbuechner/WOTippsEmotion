@@ -56,16 +56,18 @@ class Shopware_Plugins_Frontend_WOTippsEmotion_Bootstrap extends Shopware_Compon
             'onFrontDispatch'
         );
 
-        $menuOptions = array(
-            'label' => 'Einkaufswelten Cache leeren',
-            'controller' => 'WOTippsEmotionCache',
-            'class' => 'sprite-minus-octagon',
-            'action' => 'Index',
-            'active' => 1,
-            'parent' => $this->Menu()->findOneBy(['controller' => 'Performance'])
-        );
+        if (!$this->Menu()->findOneBy(array('controller' => 'WOTippsEmotionCache'))) {
+            $menuOptions = array(
+                'label' => 'Einkaufswelten Cache leeren',
+                'controller' => 'WOTippsEmotionCache',
+                'class' => 'sprite-minus-octagon',
+                'action' => 'Index',
+                'active' => 1,
+                'parent' => $this->Menu()->findOneBy(array('controller' => 'Performance'))
+            );
 
-        $this->createMenuItem($menuOptions);
+            $this->createMenuItem($menuOptions);
+        }
 
         return array
         (
