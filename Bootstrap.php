@@ -8,7 +8,7 @@ class Shopware_Plugins_Frontend_WOTippsEmotion_Bootstrap extends Shopware_Compon
 
     public function getVersion()
     {
-        return "1.1.4";
+        return "1.1.5";
     }
 
     public function getLabel()
