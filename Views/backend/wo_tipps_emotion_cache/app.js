@@ -9,7 +9,7 @@ Ext.define('Shopware.apps.WOTippsEmotionCache', {
     controllers: ['Direct'],
 
     views: [],
-    
+
     windowClasses: [],
 
     models: [],

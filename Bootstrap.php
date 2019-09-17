@@ -18,15 +18,15 @@ class Shopware_Plugins_Frontend_WOTippsEmotion_Bootstrap extends Shopware_Compon
 
     public function getInfo()
     {
-        return array(
-            'version'     => $this->getVersion(),
-            'autor'       => 'Niklas B&uuml;chner | Webseiten-Optimierungs-Tipps.de',
-            'copyright'   => '© 2018',
-            'label'       => $this->getLabel(),
-            'license'     => 'n.buechner@wotipps.de',
-            'support'     => 'n.buechner@wotipps.de',
-            'link'        => 'http://www.webseiten-optimierungs-tipps.de'
-        );
+        return [
+            'version' => $this->getVersion(),
+            'autor' => 'Niklas B&uuml;chner | Webseiten-Optimierungs-Tipps.de',
+            'copyright' => '© 2018',
+            'label' => $this->getLabel(),
+            'license' => 'n.buechner@wotipps.de',
+            'support' => 'n.buechner@wotipps.de',
+            'link' => 'http://www.webseiten-optimierungs-tipps.de',
+        ];
     }
 
     public function install()
@@ -56,41 +56,44 @@ class Shopware_Plugins_Frontend_WOTippsEmotion_Bootstrap extends Shopware_Compon
             'onFrontDispatch'
         );
 
-        if (!$this->Menu()->findOneBy(array('controller' => 'WOTippsEmotionCache'))) {
-            $menuOptions = array(
+        if (!$this->Menu()->findOneBy(['controller' => 'WOTippsEmotionCache'])) {
+            $menuOptions = [
                 'label' => 'Einkaufswelten Cache leeren',
                 'controller' => 'WOTippsEmotionCache',
                 'class' => 'sprite-minus-octagon',
                 'action' => 'Index',
                 'active' => 1,
-                'parent' => $this->Menu()->findOneBy(array('controller' => 'Performance'))
-            );
+                'parent' => $this->Menu()->findOneBy(['controller' => 'Performance']),
+            ];
 
             $this->createMenuItem($menuOptions);
         }
 
-        return array
-        (
+        return [
             'success' => true,
-        );
+        ];
     }
 
     public function enable()
     {
-        return array
-        (
+        return [
             'success' => true,
-            'invalidateCache' => array('template', 'theme')
-        );
+            'invalidateCache' => [
+                'template',
+                'theme',
+            ],
+        ];
     }
 
     public function uninstall()
     {
-        return array
-        (
+        return [
             'success' => true,
-            'invalidateCache' => array('template', 'theme')
-        );
+            'invalidateCache' => [
+                'template',
+                'theme',
+            ],
+        ];
     }
 
     public function addJavascriptFiles(Enlight_Event_EventArgs $args)
@@ -101,8 +104,7 @@ class Shopware_Plugins_Frontend_WOTippsEmotion_Bootstrap extends Shopware_Compon
             $js = __DIR__ . '/js/load.js';
         }
 
-        return new ArrayCollection(array($js));
-
+        return new ArrayCollection([$js]);
     }
 
     public function onFrontDispatch(Enlight_Event_EventArgs $args)
@@ -113,13 +115,13 @@ class Shopware_Plugins_Frontend_WOTippsEmotion_Bootstrap extends Shopware_Compon
     public function addCSSFiles(Enlight_Event_EventArgs $args)
     {
         $less = new LessDefinition(
-                array(),
-                array(
+            [],
+            [
                     __DIR__ . '/css/load.less'
-                    )
-                );
+            ]
+        );
 
-        return new ArrayCollection(array($less));
+        return new ArrayCollection([$less]);
     }
 
     public function beforeFrontedDispatch(Enlight_Event_EventArgs $args)
@@ -132,8 +134,8 @@ class Shopware_Plugins_Frontend_WOTippsEmotion_Bootstrap extends Shopware_Compon
     public function onCacheController(Enlight_Event_EventArgs $args)
     {
         $this->Application()->Template()->addTemplateDir(
-                $this->Path() . 'Views/'
-                );
+            $this->Path() . 'Views/'
+        );
 
         return $this->Path() . '/Controllers/Backend/WOTippsEmotionCache.php';
     }

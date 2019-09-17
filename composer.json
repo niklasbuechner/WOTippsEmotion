@@ -1,0 +1,41 @@
+{
+    "name": "niklasbuechner/WOTippsEmotion",
+    "description": "WOTipps Einkaufsweltenbeschleuniger.",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Niklas Buechner",
+            "homepage": "https://www.github.com/niklasbuechner"
+        }
+    ],
+    "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:VIISON/composer-git-hooks-installer-plugin.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:VIISON/style-guide.git"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "viison/style-guide": "^2"
+    },
+    "scripts": {
+        "phpcs": "vendor/bin/phpcs -s -n .",
+        "phpcs:fix": "vendor/bin/phpcbf -s -n ."
+    },
+    "extra": {
+        "required-viison-git-hooks": {
+            "viison/style-guide": [
+                "shopware-plugin"
+            ]
+        }
+    }
+}

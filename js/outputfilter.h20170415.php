@@ -20,72 +20,65 @@ function smarty_outputfilter_h20170415($input)
     $html = '';
     $path = realpath(__DIR__ . '/../../../../../../../var/cache/');
     $host = null;
-    //$path = realpath(__DIR__ . '/var/cache/');
 
     preg_match_all(
-            '/\/(?:[a-zA-Z0-9\/\.-]*)widgets\/emotion\/[a-zA-Z0-9-]+\/emotionId\/[0-9]+\/controllerName\/[a-zA-Z0-9-]+\/?/',
-            $input, $groups
+        '/\/(?:[a-zA-Z0-9\/\.-]*)widgets\/emotion\/[a-zA-Z0-9-]+\/emotionId\/[0-9]+\/controllerName\/[a-zA-Z0-9-]+\/?/',
+        $input,
+        $groups
     );
 
-    if ($groups == null || count($groups) < 1)
-    {
+    if ($groups == null || count($groups) < 1) {
         $debug['groups'] = 'None';
+
         return getOutput($input, $debug);
     }
 
-    if (!is_dir($path . '/WOTippsEmotion/'))
-    {
-        try
-        {
+    if (!is_dir($path . '/WOTippsEmotion/')) {
+        try {
             mkdir($path . '/WOTippsEmotion/');
-        }
-        catch (Exception $ex)
-        {
+        } catch (Exception $ex) {
             $debug['Exception'] = true;
+
             return getOutput($input, $debug);
         }
 
-        if (!is_dir($path . '/WOTippsEmotion/'))
-        {
+        if (!is_dir($path . '/WOTippsEmotion/')) {
             $debug['dir'] = 'Does not exist';
+
             return getOutput($input, $debug);
         }
     }
 
     $debug['groups'] = count($groups[0]);
 
-    foreach ($groups[0] as $extract)
-    {
+    foreach ($groups[0] as $extract) {
         $debugArr = [];
         $emotion = null;
         $url = $extract;
 
-        if ( !(strpos($extract, '?') === false) )
-        {
+        if (!(mb_strpos($extract, '?') === false)) {
             continue;
         }
 
-        if (substr($url, -1) == '/')
-        {
-            $url = substr($url, 0, strlen($url) -1);
+        if (mb_substr($url, -1) == '/') {
+            $url = mb_substr($url, 0, mb_strlen($url) -1);
         }
 
         $url = preg_replace('/\//', '-', $url);
         $debugArr['url'] = $url;
 
-        if (file_exists($path . '/WOTippsEmotion/' . $url . '.wotipps.emotion'))
-        {
+        if (file_exists($path . '/WOTippsEmotion/' . $url . '.wotipps.emotion')) {
             $debugArr['src'] = 'file';
             $emotion = file_get_contents($path . '/WOTippsEmotion/' . $url . '.wotipps.emotion');
-        }
-        else
-        {
-            if (substr($extract, 0, 4) != 'http')
-            {
+        } else {
+            if (mb_substr($extract, 0, 4) != 'http') {
                 if ($host === null) {
                     $hostMatches = null;
-                    preg_match('/<link rel="canonical" href="(http[s]*:\/\/[a-zA-Z0-9\.\-]+)\//',
-                        $input, $hostMatches);
+                    preg_match(
+                        '/<link rel="canonical" href="(http[s]*:\/\/[a-zA-Z0-9\.\-]+)\//',
+                        $input,
+                        $hostMatches
+                    );
 
                     if (isset($hostMatches[1])) {
                         $host = $hostMatches[1];
@@ -96,9 +89,7 @@ function smarty_outputfilter_h20170415($input)
                     }
                 }
                 $cUrl = $host . $extract;
-            }
-            else
-            {
+            } else {
                 $cUrl = $extract;
             }
             $debugArr['src'] = 'load';
@@ -108,22 +99,18 @@ function smarty_outputfilter_h20170415($input)
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $result = curl_exec($ch);
 
-            if (curl_errno($ch) == 0)
-            {
+            if (curl_errno($ch) == 0) {
                 file_put_contents($path . '/WOTippsEmotion/' . $url . '.wotipps.emotion', $result);
                 $emotion = $result;
                 $debugArr['msg'] = 'Saved to disk';
-            }
-            else
-            {
+            } else {
                 $debugArr['msg'] = curl_error($ch);
             }
 
             curl_close($ch);
         }
 
-        if ($emotion != null)
-        {
+        if ($emotion != null) {
             $emotion = preg_replace('/product-slider--content/', 'product-slider--content wotipps-product-slider-hidden', $emotion);
 
             $template  = '<script type="text/template" class="wotipps-' . $url . ' wotipps-hidden">';
@@ -155,7 +142,6 @@ if (availableDevices.indexOf('0') != -1 && width > 1259) {show(5);}
 </script>
 SCRIPT;
 
-
             $input = preg_replace($pattern, $replacement, $input);
 
             $output['pattern'] = $pattern;
@@ -163,17 +149,12 @@ SCRIPT;
 
             $debugArr['success'] = 'Emotion replaced';
             $debugArr['pattern'] = $pattern;
-            //$debugArr['replacement'] = substr($replacement, 0, 200);
-        }
-        else
-        {
+        } else {
             $debugArr['success'] = 'Emotion not found';
         }
 
         $debug['emotion'][] = $debugArr;
     }
-
-    //$input = preg_replace('/<\/body>/', $html . '</body>', $input);
 
     return getOutput($input, $debug);
 }
@@ -181,5 +162,6 @@ SCRIPT;
 function getOutput($input, $json)
 {
     $string = json_encode($json);
+
     return str_replace('</body>', '<style>.wotipps-hidden{visibility:hidden;display:none;}</style><script>function wotippsDeb(){var a = ' . $string . ';}</script></body>', $input);
 }
